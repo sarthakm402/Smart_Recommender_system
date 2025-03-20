@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Recommendation System</title>
+    <script>
+        async function predictSentiment() {
+            let review = document.getElementById("review").value;
+            let response = await fetch("/predict_sentiment", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ review: review })
+            });
+            let data = await response.json();
+            document.getElementById("sentimentResult").innerText = "Sentiment: " + data.sentiment;
+        }
+
+        async function getRecommendations() {
+            let userId = document.getElementById("user_id").value;
+            let response = await fetch(`/recommend/${userId}`);
+            let data = await response.json();
+            document.getElementById("recommendations").innerText = "Recommended Hotels: " + data.recommended_hotels.join(", ");
+        }
+
+        async function getSimilarHotels() {
+            let hotelId = document.getElementById("hotel_id").value;
+            let response = await fetch(`/similar_hotels/${hotelId}`);
+            let data = await response.json();
+            document.getElementById("similarHotels").innerText = "Similar Hotels: " + data.similar_hotels.join(", ");
+        }
+    </script>
+</head>
+<body>
+    <h1>Hotel Recommendation System</h1>
+
+    <h2>Sentiment Analysis</h2>
+    <textarea id="review" rows="4" cols="50" placeholder="Enter a review..."></textarea><br>
+    <button onclick="predictSentiment()">Analyze Sentiment</button>
+    <p id="sentimentResult"></p>
+
+    <h2>Hotel Recommendations</h2>
+    <input type="number" id="user_id" placeholder="Enter User ID">
+    <button onclick="getRecommendations()">Get Recommendations</button>
+    <p id="recommendations"></p>
+
+    <h2>Find Similar Hotels</h2>
+    <input type="number" id="hotel_id" placeholder="Enter Hotel ID">
+    <button onclick="getSimilarHotels()">Find Similar</button>
+    <p id="similarHotels"></p>
+</body>
+</html>
