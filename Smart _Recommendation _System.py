@@ -7,7 +7,7 @@ from transformers import BertTokenizer, BertForSequenceClassification
 from sklearn.model_selection import train_test_split
 from sklearn.utils.class_weight import compute_class_weight
 import numpy as np
-
+ 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 df = pd.read_csv(r"C:\Users\sarthak mohapatra\Downloads\archive\tripadvisor_hotel_reviews.csv")
